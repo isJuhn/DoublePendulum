@@ -7,8 +7,8 @@ private:
 public:
 	pendulum();
 	pendulum(float centerX, float centerY, float length, float radius, float x, float y);
-	void calculateNewPos(float delta);
-	void moveCenter(float dx, float dy);
+	void calculateNewPos();
+	void moveCenter(float x, float y);
 	float getX();
 	float getY();
 	float getCenterX();

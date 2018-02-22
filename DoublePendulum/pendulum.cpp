@@ -1,4 +1,5 @@
 #include "pendulum.h"
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 pendulum::pendulum()
@@ -11,7 +12,7 @@ pendulum::pendulum()
 	y = 0.f;
 	vx = 0.f;
 	vy = 0.f;
-	g = 1.f;
+	g = .1f;
 }
 
 pendulum::pendulum(float centerX, float centerY, float length, float radius, float x, float y)
@@ -24,25 +25,26 @@ pendulum::pendulum(float centerX, float centerY, float length, float radius, flo
 	pendulum::y = y;
 	vx = 0;
 	vy = 0;
-	g = 1.f;
+	g = .1f;
 }
 
-void pendulum::calculateNewPos(float delta)
+void pendulum::calculateNewPos()
 {
-	if (pow(x - centerX, 2) + pow(y - centerY, 2) > length * length)
-	{
-
-	}
-	vx += g;
+	vy += g;
+	float v = length - sqrtf(powf(x - centerX, 2) + powf(y - centerY, 2)) - sqrtf(vx * vx + vy * vy);
+	float angle = atan((centerY - y) / (x - centerX));
+	angle = x - centerX > 0 ? angle : angle + M_PI;
+	vx += v * cos(angle);
+	vy -= v * sin(angle);
 
 	x += vx;
 	y += vy;
 }
 
-void pendulum::moveCenter(float dx, float dy)
+void pendulum::moveCenter(float x, float y)
 {
-	centerX += dx;
-	centerY += dy;
+	centerX = x;
+	centerY = y;
 }
 
 float pendulum::getX()
